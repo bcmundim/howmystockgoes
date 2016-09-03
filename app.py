@@ -1,5 +1,7 @@
 import os
 import numpy as np
+import pandas as pd
+import quandl
 from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
@@ -16,6 +18,9 @@ def index():
       print "Not possible to load the environment variable 'QUANDL_API_KEY'"
       print 'Set API_KEY="" '
       API_KEY = ""
+
+   quandl.ApiConfig.api_key = API_KEY
+   quandl.ApiConfig.api_version = '2015-04-09'
 
    # Initialize default criterias:
    select = [
@@ -56,10 +61,19 @@ def index():
       except KeyError:
          select[3] = False
 
-      if np.any(select):
-         return " Congratulations! You selected at least one property!"
-      else:
+      if not np.any(select):
          return " Please select at least one desired feature!"
+
+      database = 'WIKI'
+      dataset = database + '/' + ticker
+      data = quandl.Dataset(dataset).data(params={'start_date':'2016-08-01',
+                                                  'end_date':'2016-09-01',
+                                                  'collapse':'annual',
+                                                  'transformation':'rdiff',
+                                                  'rows':4 })
+      df = data.to_pandas()
+      print df
+      return " Congrats!"
 
 
 if __name__ == '__main__':
