@@ -2,14 +2,39 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Hello, World!</title>
+		<title>How my stock goes...</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	</head>
 	<body>
 		<div>
-  			<h1>Hello, World!</h1>
+  			<h1>User Input</h1>
+         <p>
+            Please enter a stock ticker, GOOG, for example, and check desired
+            features.
+         </p>
+         <form id='userinput' method='post' action='index' >
+            <p>
+               Ticker symbol: 
+               <input type='text' size=5 name='ticker' min=1 maxlength=5 /> <br>
+               <input type='checkbox' name='closing_price' value="yes"/>
+               Closing price <br>
+               <input type='checkbox' name='adjusted_closing_price' value="yes"/>
+               Adjusted closing price <br>
+               <input type='checkbox' name='opening_price' value="yes"/>
+               opening price <br>
+               <input type='checkbox' name='adjusted_opening_price' value="yes"/>
+               Adjusted opening price <br>
+            </p>
+         <p>
+            <input type='submit' value='Submit' />
+         </p>
+         </form>
+
+<!--
+         <a href='https://www.quandl.com/api/v3/datasets/WIKI/{{TICKER}}.json?api_key={{KEY}}'> AI</a>
+-->
 		</div>
 	</body>
 </html>
