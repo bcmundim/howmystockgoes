@@ -2,6 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 import quandl
+import datetime
 from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
@@ -19,8 +20,20 @@ def index():
       print 'Set API_KEY="" '
       API_KEY = ""
 
+   # Get Quandl API from the environment and set api version:
    quandl.ApiConfig.api_key = API_KEY
    quandl.ApiConfig.api_version = '2015-04-09'
+
+   # Get today's date and set past month date:
+   now = datetime.datetime.now()
+   today = str(now.year) + '-' + str(now.month) + '-' + str(now.day)
+   pastmonth = now.month - 1
+   year = now.year
+   if pastmonth == 0:
+      pastmonth = 12
+      year = now.year - 1
+   pastday = now.day if now.day < 29 else 28
+   lastmonth = str(year) + '-' + str(pastmonth) + '-' + str(pastday)
 
    # Initialize default criterias:
    select = [
@@ -66,11 +79,9 @@ def index():
 
       database = 'WIKI'
       dataset = database + '/' + ticker
-      data = quandl.Dataset(dataset).data(params={'start_date':'2016-08-01',
-                                                  'end_date':'2016-09-01',
-                                                  'collapse':'annual',
-                                                  'transformation':'rdiff',
-                                                  'rows':4 })
+      data = quandl.Dataset(dataset).data(params={'start_date':lastmonth,
+                                                  'end_date':today
+                                                 })
       df = data.to_pandas()
       print df
       return " Congrats!"
