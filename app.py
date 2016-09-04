@@ -81,9 +81,22 @@ def index():
       dataset = database + '/' + ticker
       data = quandl.Dataset(dataset).data(params={'start_date':lastmonth,
                                                   'end_date':today
+                                                  #'collapse':'annual',
+                                                  #'transformation':'rdiff',
+                                                  #'rows':4 
                                                  })
       df = data.to_pandas()
-      print df
+
+      #print df.columns
+      # Index([u'Open', u'High', u'Low', u'Close', u'Volume', u'Ex-Dividend',
+      # u'Split Ratio', u'Adj. Open', u'Adj. High', u'Adj. Low', u'Adj. Close',
+      # u'Adj. Volume'],
+      # dtype='object')
+
+      #print df['Date'],  df['Open']
+      #print df.head()
+      print df['Open'], df['Close'], df['Adj. Open'], df['Adj. Close']
+
       return " Congrats!"
 
 
