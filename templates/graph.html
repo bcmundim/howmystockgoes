@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <title>{{ticker}} ticker data</title>
+    <link rel="stylesheet" href="//cdn.pydata.org/bokeh/release/bokeh-{{version}}.min.css" type="text/css" />
+    <script type="text/javascript" src="//cdn.pydata.org/bokeh/release/bokeh-{{version}}.min.js"></script>
+    {{ script | safe }}
+  </head>
+  <body>
+    <div class=page>
+      <h1>Generated graph for {{ticker}} ticker</h1>
+      <a href="{{ url_for('index') }}">Back to 'How my stock goes' application</a>
+      {{ div | safe }}
+    </div>
+  </body>
+</html>

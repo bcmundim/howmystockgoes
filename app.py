@@ -4,6 +4,9 @@ import pandas as pd
 import quandl
 import datetime
 from flask import Flask, render_template, request, redirect
+import bokeh
+from bokeh.plotting import figure
+from bokeh.embed import components 
 
 app = Flask(__name__)
 
@@ -95,9 +98,24 @@ def index():
 
       #print df['Date'],  df['Open']
       #print df.head()
-      print df['Open'], df['Close'], df['Adj. Open'], df['Adj. Close']
+      #print df['Open'], df['Close'], df['Adj. Open'], df['Adj. Close']
 
-      return " Congrats!"
+      # Make sure Bokeh knows the index is of Data Time kind:
+      #plot = figure(tools=TOOLS,
+      plot = figure(
+              title='Data from Quandl WIKI set',
+              x_axis_label='Date',
+              y_axis_label='Price',
+              x_axis_type='datetime')
+
+      # Render Bokeh plot components:
+      script, div = components(plot)
+      return render_template('graph.html', 
+                              script=script, 
+                              div=div,
+                              version=bokeh.__version__,
+                              ticker=ticker
+                            )
 
 
 if __name__ == '__main__':
