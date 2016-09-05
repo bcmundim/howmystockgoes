@@ -99,7 +99,6 @@ def index():
       # u'Adj. Volume'],
       # dtype='object')
 
-      #print df['Date'],  df['Open']
       #print df.head()
       #print df['Open'], df['Close'], df['Adj. Open'], df['Adj. Close']
 
@@ -111,7 +110,23 @@ def index():
               y_axis_label='Price',
               x_axis_type='datetime')
 
-      plot.line(df.index,df['Open'])
+      # NOTE: Instead of df.index.to_series() below, df.index also works fine.
+      if select[0]: # closing price
+         plot.line(df.index.to_series(),df['Close'],
+                   legend = ticker + ':' + 'Close',
+                   color = 'red')
+      if select[1]: # adjusted closing price
+         plot.line(df.index.to_series(),df['Adj. Close'],
+                   legend = ticker + ':' + 'Adj. Close',
+                   color = 'orange')
+      if select[2]: # opening price
+         plot.line(df.index.to_series(),df['Open'],
+                   legend = ticker + ':' + 'Open',
+                   color = 'green')
+      if select[3]: # adjusted opening price
+         plot.line(df.index.to_series(),df['Adj. Open'],
+                   legend = ticker + ':' + 'Adj. Open',
+                   color = 'blue')
 
       # Render Bokeh plot components:
       script, div = components(plot)
