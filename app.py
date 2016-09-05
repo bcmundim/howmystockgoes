@@ -27,16 +27,19 @@ def index():
    quandl.ApiConfig.api_key = API_KEY
    quandl.ApiConfig.api_version = '2015-04-09'
 
-   # Get today's date and set past month date:
+   # Get today's date and set past month date or past year:
    now = datetime.datetime.now()
    today = str(now.year) + '-' + str(now.month) + '-' + str(now.day)
    pastmonth = now.month - 1
    year = now.year
+   pastyear = year - 1
    if pastmonth == 0:
       pastmonth = 12
       year = now.year - 1
    pastday = now.day if now.day < 29 else 28
-   lastmonth = str(year) + '-' + str(pastmonth) + '-' + str(pastday)
+   frompastmonth = str(year) + '-' + str(pastmonth) + '-' + str(pastday)
+   frompastyear = str(pastyear) + '-' + str(now.month) + '-' + str(now.day)
+
 
    # Initialize default criterias:
    select = [
@@ -82,7 +85,7 @@ def index():
 
       database = 'WIKI'
       dataset = database + '/' + ticker
-      data = quandl.Dataset(dataset).data(params={'start_date':lastmonth,
+      data = quandl.Dataset(dataset).data(params={'start_date':frompastyear,
                                                   'end_date':today
                                                   #'collapse':'annual',
                                                   #'transformation':'rdiff',
@@ -107,6 +110,8 @@ def index():
               x_axis_label='Date',
               y_axis_label='Price',
               x_axis_type='datetime')
+
+      plot.line(df.index,df['Open'])
 
       # Render Bokeh plot components:
       script, div = components(plot)
